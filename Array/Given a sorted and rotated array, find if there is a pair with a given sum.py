@@ -31,3 +31,5 @@ if sumFound:
   print("Sum Found")
 else:
   print("Sum not Found")
+
+# Time Complexity: O(n)

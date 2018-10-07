@@ -1,3 +1,23 @@
+""" 
+1. append
+2. prepend
+3. insert
+4. search
+5. deleteKey
+6. findLengthOfLinkedList
+7. deletePosition
+8. sort
+9. deleteLinkedList
+10. display
+11. findPosition
+12. nthNodeFromEnd
+13. middle Value
+14. count of a given value
+"""
+
+import gc
+
+
 class Node:
     def __init__(self, data, next):
         self.data = data
@@ -47,10 +67,10 @@ class SinglyLinkedList(Node):
                 print('%d Not found' % (key))
                 return
             curr = curr.next
-        print('%d found' % (curr.data))
+        print(key,'found')
         return
 
-    def delete(self, key):
+    def deleteKey(self, key):
         # 1. find the element
         # 2. if element not found, return
         # 3. else link its previous node to its next node
@@ -72,6 +92,41 @@ class SinglyLinkedList(Node):
         prev.next = curr.next
         print('%d deleted' % (key))
 
+    def findLengthOfLinkedList(self):
+        length = 0
+        curr = self.head
+        while(curr):
+            length+=1
+            curr = curr.next
+        return length
+    
+    def valueAtPosition(self,position):
+        curr = self.head
+        for i in range(position-1):
+            if not curr.next:
+                # print("Position", position, "not exit")
+                return -1
+            curr = curr.next
+        return curr.data
+
+    def deletePosition(self, position):
+        # 1. traverse till position-1th node.
+        # 2. link it to the node next to the position t be deleted
+        curr = self.head
+        if position == 0:
+            """ position does not exit """
+            # print("Position", position, "not exits")
+            return -1
+        if position == 1:
+            self.head = self.head.next
+            return
+        for i in range(position-2):
+            if not curr.next:
+                print("Position", position, "not exit")
+                return
+            curr = curr.next
+        curr.next = curr.next.next
+
     def sort(self):
         # 1. add all elements to a list
         # 2. sort the list using sort function
@@ -87,6 +142,12 @@ class SinglyLinkedList(Node):
             curr.data = list.pop()
             curr = curr.next
 
+    def deleteLinkedList(self):
+        """ 
+        1. point head to null
+        """
+        self.head = None
+
     def reverse(self):
         # 1. use a varible temp to point to next node
         # 2. reasign link of current node to its previous node
@@ -101,27 +162,106 @@ class SinglyLinkedList(Node):
             self.head = last
 
     def display(self):
+        if not self.head:
+            print("Linkedlist not present")
+            return
         curr = self.head  # curr used to traverse the linked list
         while curr:  # traverse till there is an element
             print(curr.data, end=" --> ")  # print the data part of curr
             curr = curr.next  # go to the next node
         print('null\n')
+    
+    def nthNodeFromEnd(self, positionfromEnd):
+        curr = self.head
+        n = self.head
+        for i in range(positionfromEnd-1):
+            if not n.next:
+                # print("this position does not exist")
+                return -1
+            n = n.next
+        while n.next:
+            curr = curr.next
+            n = n.next
+        return curr.data
 
+    def middleValue(self):
+        slow = self.head
+        fast = self.head
+        while fast.data:
+            if not fast.next:
+                break
+            fast = fast.next
+            if not fast.next:
+                break
+            fast = fast.next
+            slow = slow.next
+        return slow.data
+    
+    def countOfValue(self,value):
+        curr = self.head
+        count = 0
+        while curr:
+            print(curr.data)
+            if curr.data == value:
+                count+=1
+            curr = curr.next
+        return count
+        
 
 List1 = SinglyLinkedList()
+# append
 List1.append(23)
 List1.append(26)
 List1.append(87)
 List1.append(8776)
+
+# prepend
 List1.prepend(30)
+# insert
 List1.insert(32, 3)
-List1.display()
+# List1.display()
+# search
 List1.search(100)
-List1.delete(8776)
-List1.display()
-List1.sort()
-print("-----After Sorting-----")
-List1.display()
-print("-----After Reversing-----")
+# deleteKey
+List1.deleteKey(8776)
+# List1.display()
+# List1.sort()
+# print("-----After Sorting-----")
+# List1.display()
+# print("-----After Reversing-----")
+# reverse
 List1.reverse()
+# List1.display()
+deletePosition = 100
+# print("Before deleting node at postion", deletePosition)
+# List1.display()
+# print("After deleting node at position", deletePosition)
+#  deletePosition
+# List1.deletePosition(deletePosition)
+# List1.display()
+position = 0
+valueAtPosition = List1.valueAtPosition(position)
+if valueAtPosition == -1:
+    print("position",position,"does not exists")
+else:
+    print("value at position",position,"is",valueAtPosition)
+print("Length of linkedlist",List1.findLengthOfLinkedList())
+# print("Before deleting linkedlist")
+# List1.display()
+#  deleteLinkedList
+# List1.deleteLinkedList()
+# print("After deleting linkedlist")
+valueFromEnd = List1.nthNodeFromEnd(position)
+if valueFromEnd == -1:
+    print("Unable to find the value at position",position)
+else:
+    print("number",position,"value from end",valueFromEnd)
+List1.append(8765)
+List1.append(8765965)
+valueAtMiddle = List1.middleValue()
+print("Value at center is",valueAtMiddle)
+List1.append(23)
+value = 23
+print("Count of",value,"is",List1.countOfValue(value))
 List1.display()
+gc.collect()

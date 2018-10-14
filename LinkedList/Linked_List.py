@@ -1,4 +1,4 @@
-""" 
+"""
 1. append
 2. prepend
 3. insert
@@ -67,7 +67,7 @@ class SinglyLinkedList(Node):
                 print('%d Not found' % (key))
                 return
             curr = curr.next
-        print(key,'found')
+        print(key, 'found')
         return
 
     def deleteKey(self, key):
@@ -96,11 +96,11 @@ class SinglyLinkedList(Node):
         length = 0
         curr = self.head
         while(curr):
-            length+=1
+            length += 1
             curr = curr.next
         return length
-    
-    def valueAtPosition(self,position):
+
+    def valueAtPosition(self, position):
         curr = self.head
         for i in range(position-1):
             if not curr.next:
@@ -143,7 +143,7 @@ class SinglyLinkedList(Node):
             curr = curr.next
 
     def deleteLinkedList(self):
-        """ 
+        """
         1. point head to null
         """
         self.head = None
@@ -170,7 +170,7 @@ class SinglyLinkedList(Node):
             print(curr.data, end=" --> ")  # print the data part of curr
             curr = curr.next  # go to the next node
         print('null\n')
-    
+
     def nthNodeFromEnd(self, positionfromEnd):
         curr = self.head
         n = self.head
@@ -196,17 +196,94 @@ class SinglyLinkedList(Node):
             fast = fast.next
             slow = slow.next
         return slow.data
-    
-    def countOfValue(self,value):
+
+    def countOfValue(self, value):
         curr = self.head
         count = 0
         while curr:
             print(curr.data)
             if curr.data == value:
-                count+=1
+                count += 1
             curr = curr.next
         return count
-        
+
+
+def splitList(list):
+    if list == None or list.next == None:
+        left_half = list
+        right_half = None
+        return left_half, right_half
+
+    mid_pointer = list
+    fast_runner = list.next
+
+    while fast_runner:
+        fast_runner = fast_runner.next
+        if fast_runner:
+            fast_runner = fast_runner.next
+            mid_pointer = mid_pointer.next
+    left_half = list
+    right_half = mid_pointer.next
+    mid_pointer.next = None
+    return left_half, right_half
+
+def Merge(left_half, right_half):
+    # print("Head:",list.data)
+    fake_head = Node(None,None)
+    curr = fake_head
+    list_head = None
+    while left_half and right_half:
+        if left_half.data < right_half.data:
+            print("Left is smaller:",left_half.data)
+            if not list_head:
+                list_head = left_half
+            curr.next = left_half
+            print("starting from",left_half.data)
+            left_half = left_half.next
+            # print("Linking it to",left_half.data)
+        else:
+            print("Right is smaller:",right_half.data)
+            if not list_head:
+                list_head = right_half
+            curr.next = right_half
+            print("starting from",right_half.data)
+            right_half = right_half.next
+        print("Current:",curr.next.data)
+        curr = curr.next
+    
+    if left_half:
+        curr.next = left_half
+        print("Linked to",left_half.data)
+    if right_half:
+        curr.next = right_half
+        print("Linked to",right_half.data)
+    # list = fake_head
+    print("List should start at",list_head.data,"as")
+    while list_head:
+        print(list_head.data,"-->",end=" ")
+        list_head = list_head.next
+    print("null")
+    return fake_head.next, list_head
+
+def MergeSort(list):
+    # print("\n+-------------------------------+\n|\t\t",list.data,"\t\t|\n+-------------------------------+\n\n")
+    if not list or not list.next:
+        return list
+    left_half, right_half = splitList(list)
+    left_half = MergeSort(left_half)
+    right_half = MergeSort(right_half)
+    print("\nAfter merging left",left_half.data)
+    print("After merging right",right_half.data)
+    merged_list, merged_head = Merge(left_half,right_half)
+    return merged_list
+
+def printList(list):
+    list = list.head
+    print("Printing list",list.data)
+    while list:
+        print(list.data,"--> ",end="")
+        list = list.next
+    print("null")
 
 List1 = SinglyLinkedList()
 # append
@@ -242,10 +319,10 @@ deletePosition = 100
 position = 0
 valueAtPosition = List1.valueAtPosition(position)
 if valueAtPosition == -1:
-    print("position",position,"does not exists")
+    print("position", position, "does not exists")
 else:
-    print("value at position",position,"is",valueAtPosition)
-print("Length of linkedlist",List1.findLengthOfLinkedList())
+    print("value at position", position, "is", valueAtPosition)
+print("Length of linkedlist", List1.findLengthOfLinkedList())
 # print("Before deleting linkedlist")
 # List1.display()
 #  deleteLinkedList
@@ -253,15 +330,22 @@ print("Length of linkedlist",List1.findLengthOfLinkedList())
 # print("After deleting linkedlist")
 valueFromEnd = List1.nthNodeFromEnd(position)
 if valueFromEnd == -1:
-    print("Unable to find the value at position",position)
+    print("Unable to find the value at position", position)
 else:
-    print("number",position,"value from end",valueFromEnd)
+    print("number", position, "value from end", valueFromEnd)
 List1.append(8765)
-List1.append(8765965)
+List1.append(75)
 valueAtMiddle = List1.middleValue()
-print("Value at center is",valueAtMiddle)
-List1.append(23)
+print("Value at center is", valueAtMiddle)
+# List1.append(23)
 value = 23
-print("Count of",value,"is",List1.countOfValue(value))
+print("Count of", value, "is", List1.countOfValue(value))
+print("Displaying")
 List1.display()
+# printList(List1.head)
+List1.append(59)
+print("Sorting")
+MergeSort(List1.head)
+# List1.display()
+printList(List1)
 gc.collect()

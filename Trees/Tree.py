@@ -38,7 +38,7 @@ class Tree:
     def PrintTree(self):
         if self.left:
             self.left.PrintTree()
-        print(self.data),
+        print(self.data)
         if self.right:
             self.right.PrintTree()
 
@@ -49,6 +49,6 @@ Tree1.insert(15)
 Tree1.insert(40)
 Tree1.insert(35)
 Tree1.PrintTree()
-Tree1.search(20)
-Tree1.search(10)
-Tree1.search(200)
+# Tree1.search(20)
+# Tree1.search(10)
+# Tree1.search(200)
